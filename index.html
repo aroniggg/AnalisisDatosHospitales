@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnalisisDatosHospitales</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sora&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Sora', sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      animation: fadeInScale 1.5s ease-in-out;
+    }
+    header {
+      background-color: #34495e;
+      color: white;
+      padding: 30px 15px;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      animation: fadeInScale 1.5s ease-in-out;
+    }
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .main {
+      display: flex;
+      flex: 1;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      overflow-y: auto;
+      transition: all 0.3s ease-in-out;
+    }
+    .sidebar:hover {
+      width: 250px;
+    }
+    .sidebar h2 {
+      margin-bottom: 30px;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar ul li {
+      margin: 20px 0;
+    }
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar ul li a:hover {
+      text-decoration: underline;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      background-color: #ecf0f1;
+      position: relative;
+    }
+    .fade {
+      animation: fadeInScale 0.8s ease-in-out;
+    }
+    iframe {
+      width: 100%;
+      height: 90vh;
+      border: none;
+    }
+    .home {
+      font-size: 1em;
+      padding: 1rem;
+    }
+    .hidden {
+      display: none;
+    }
+    .description {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #2c3e50;
+    }
+    .logo-container {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+    }
+    .logo-container img {
+      width: 180px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Análisis de datos para los Hospitales María Auxiliadora y el Hospital Karolinska
+  </header>
+  <div class="main">
+    <div class="sidebar">
+      <h2>Menú de visualizaciones</h2>
+      <ul>
+        <li><a href="#" onclick="showHome()"><i class="fas fa-home"></i> Inicio</a></li>
+        <li><a href="#" onclick="loadDashboard('powerbi')"><i class="fas fa-chart-bar"></i> Power BI - Citas médicas</a></li>
+        <li><a href="#" onclick="loadDashboard('looker1')"><i class="fas fa-notes-medical"></i> Looker Studio - Comparativo atención</a></li>
+        <li><a href="#" onclick="loadDashboard('looker2')"><i class="fas fa-stethoscope"></i> Looker Studio - Predicciones</a></li>
+      </ul>
+    </div>
+    <div class="content" id="mainContent">
+      <div id="homeContent" class="home">
+        <h1>Bienvenido</h1>
+        <h4><br>⬅️ Utilice el menú lateral para visualizar los distintos análisis disponibles.</h4>
+        <p><br>✅ Esta página web tiene como propósito mostrar dashboards interactivos desarrollados con Power BI y Looker Studio para analizar datos hospitalarios de dos instituciones: el Hospital María Auxiliadora y el Hospital Karolinska.</p>
+        <p><br>✅ Este trabajo fue llevado a cabo por el equipo que está integrado por:
+        <h4><br>🔸Aroni Melgarejo, Giancarlo Ronald</h4>
+        <h4>🔸Ccanto  Ccora, Jorge Eduardo </h4>
+        <h4>🔸Tolentino Mallaopoma, Luis Alberto </h4>
+        <h4>🔸Madueño Cairo, Igor Adrián </h4>
+        <h4>🔸Romero Juárez, Luis Alonso </h4>
+      </div>
+      <div id="dashboardContainer" class="hidden">
+        <div id="description" class="description hidden"></div>
+        <iframe id="dashboardFrame" class="hidden"></iframe>
+      </div>
+      <div class="logo-container">
+        <img src="LogoUCV_2018.png" alt="Logo Universidad César Vallejo">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showHome() {
+      animateContent();
+      document.getElementById("homeContent").classList.remove("hidden");
+      document.getElementById("dashboardContainer").classList.add("hidden");
+      document.getElementById("description").classList.add("hidden");
+      document.getElementById("dashboardFrame").classList.add("hidden");
+    }
+
+    function loadDashboard(type) {
+      animateContent();
+      const iframe = document.getElementById("dashboardFrame");
+      const home = document.getElementById("homeContent");
+      const container = document.getElementById("dashboardContainer");
+      const description = document.getElementById("description");
+
+      home.classList.add("hidden");
+      container.classList.remove("hidden"); 
+      iframe.classList.add("hidden");
+
+      if (type === 'powerbi') {
+        description.innerHTML = "<br>📊 <strong>Power BI: Citas médicas:</strong><br><br>En esta parte podrás ver información de las citas que tuvo el Hospital María Auxiliadora durante 2023 y responder preguntas analíticas.";
+        iframe.src = "https://app.powerbi.com/view?r=eyJrIjoiMDU5NDIzYzQtY2M1Ny00ZmRmLTgxYzItODJlYzFjOGVhZDc0IiwidCI6ImY0YjUyODk4LThiNTktNDhmYi1iZmUyLThmNDNiMDE3Mzc1NSJ9";
+        iframe.classList.remove("hidden");
+      } else if (type === 'looker1') {
+        description.innerHTML = `<br>📊 <strong>Looker Studio - Comparativo atención:</strong><br><br>
+        En esta parte podrás ver el comparativo entre las atenciones del Hospital María Auxiliadora y el Hospital Karolinska.<br><br>
+        En el siguiente link podrías visualizar el informe en Looker Studio:<br>
+        <a href="https://lookerstudio.google.com/s/k9gsY77f7Q0" target="_blank">https://lookerstudio.google.com/s/k9gsY77f7Q0</a>`;
+      } else if (type === 'looker2') {
+        description.innerHTML = `<br>📊 <strong>Looker Studio - Predicciones:</strong><br><br>
+        En esta parte podrás ver la predicción que hemos elaborado en los modelos matemáticos regresión lineal y random forest basándonos en las citas atendidas por el Hospital María Auxiliadora en el 2023, pudiendo así predecir la cantidad de citas que tendrá en el 2026.<br><br>
+        En el siguiente link podrías visualizar el informe en Looker Studio:<br>
+        <a href="https://lookerstudio.google.com/s/uI16RZhcWR4" target="_blank">https://lookerstudio.google.com/s/uI16RZhcWR4</a>`;
+      }
+
+      description.classList.remove("hidden");
+    }
+
+    function animateContent() {
+      const content = document.getElementById("mainContent");
+      content.classList.remove("fade");
+      void content.offsetWidth;
+      content.classList.add("fade");
+    }
+  </script>
+</body>
+</html>
